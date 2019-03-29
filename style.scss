@@ -8,4 +8,26 @@ body{
 
 h1{
   color: #f00;
+  text-align: center;
+}
+
+#gameBoard {
+  border: solid 1px #000;
+  width: 40rem;
+  height: 40rem;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+
+  .cell {
+    border: 1px solid #000;
+    background: #ccc;
+
+    &.mine {
+      background: url(mine.jpg);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
 }
