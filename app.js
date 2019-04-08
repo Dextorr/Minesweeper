@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
           // if (isBlank(cells[index + el]) &&
           // countSurrounding(index+el, 'hidden') > 0){
           //   clearSurrounding(cells[index + el], index + el)
-          }
         }
       })
     }
@@ -85,5 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     cell.addEventListener('click', () => clearSurrounding(cell, index))
+    cell.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      cell.classList.toggle('flag')
+    })
   })
 })

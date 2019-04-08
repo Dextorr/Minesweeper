@@ -33,17 +33,25 @@ h1{
     }
 
     &.mine {
-      background: url(mine.jpg);
+      background-image: url(mine.jpg);
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;
     }
+
 
     &.hidden {
       background: #fff;
 
       p {
         opacity: 0;
+      }
+      
+      &.flag {
+        background-image: url(flag.png);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
       }
     }
   }
