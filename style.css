@@ -17,11 +17,22 @@ h1 {
   flex-wrap: wrap; }
   #gameBoard .cell {
     border: 1px solid #000;
-    background: #ccc; }
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    transition: background 0.5s ease; }
+    #gameBoard .cell p {
+      transition: opacity 0.5s ease; }
     #gameBoard .cell.mine {
       background: url(mine.jpg);
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat; }
+    #gameBoard .cell.hidden {
+      background: #fff; }
+      #gameBoard .cell.hidden p {
+        opacity: 0; }
 
 /*# sourceMappingURL=style.css.map */
