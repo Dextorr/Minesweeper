@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameBoard = document.getElementById('gameBoard')
   const cells = []
   const surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1]
+  const adjacent = [1, -1, width, -width]
 
   for(let i=0;i<width**2;i++){
     const cell = document.createElement('div')
@@ -23,11 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
       mine = cells[random]
     }
     mine.classList.add('mine')
-    console.log(mine)
   }
 
-  function validCells(index){
-    return surrounding.filter(cell => {
+  function validCells(arr, index){
+    return arr.filter(cell => {
       if (index%width === 0) {
         const invalid = [width-1, -1, -width -1]
         return !invalid.includes(cell)
@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function countSurrounding(index, className){
-    const toCheck = validCells(index)
-    console.log(toCheck)
+    const toCheck = validCells(surrounding, index)
     return toCheck.reduce((count, cell) => {
       if(cells[index + cell] &&
       cells[index+cell].classList.contains(className)){
@@ -55,18 +54,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function clearSurrounding(cell, index){
-    const toClear = validCells(index)
+    remove(cell, 'hidden')
+    const toClear = validCells(surrounding, index)
     if (isBlank(cell)){
       toClear.forEach(el => {
         if(cells[index + el]) {
-          remove(cells[index + el], ('hidden'))
-          // if (isBlank(cells[index + el]) &&
-          // countSurrounding(index+el, 'hidden') > 0){
-          //   clearSurrounding(cells[index + el], index + el)
+          remove(cells[index + el], 'hidden')
+          const next = validCells(adjacent, index)
+          console.log(next)
+          next.forEach(el => {
+            console.log(cells[index+el])
+            console.log(cells[index+el] && isBlank(cells[index + el]))
+            if(cells[index+el] &&
+            isBlank(cells[index + el]) &&
+            cells[index + el].classList.contains('hidden')
+            ) clearSurrounding(cells[index + el], index+el)
+          })
         }
       })
     }
-    remove(cell, 'hidden')
   }
 
   function remove(cell, className){

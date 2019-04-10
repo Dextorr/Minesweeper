@@ -33,7 +33,7 @@ h1 {
     #gameBoard .cell.hidden {
       background: #fff; }
       #gameBoard .cell.hidden p {
-        opacity: 0; }
+        opacity: 1; }
       #gameBoard .cell.hidden.flag {
         background-image: url(flag.png);
         background-position: center;
