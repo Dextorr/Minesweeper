@@ -53,26 +53,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return !gameClasses.some(gameClass => cell.classList.contains(gameClass))
   }
 
-  function clearSurrounding(cell, index){
+  function clearBlanks(cell, index){
     remove(cell, 'hidden')
-    const toClear = validCells(surrounding, index)
+    const next = validCells(adjacent, index)
     if (isBlank(cell)){
-      toClear.forEach(el => {
-        if(cells[index + el]) {
-          remove(cells[index + el], 'hidden')
-          const next = validCells(adjacent, index)
-          console.log(next)
-          next.forEach(el => {
-            console.log(cells[index+el])
-            console.log(cells[index+el] && isBlank(cells[index + el]))
-            if(cells[index+el] &&
-            isBlank(cells[index + el]) &&
-            cells[index + el].classList.contains('hidden')
-            ) clearSurrounding(cells[index + el], index+el)
-          })
+      next.forEach(el => {
+        if(cells[index+el] &&
+          isBlank(cells[index+el]) &&
+          cells[index + el].classList.contains('hidden')
+        ){
+          clearNums(index+el)
+          clearBlanks(cells[index + el], index+el)
         }
       })
     }
+  }
+
+  function clearNums(index){
+    const toClear = validCells(surrounding, index)
+    toClear.forEach(el => {
+      if(cells[index+el] &&
+        cells[index+el].classList.contains('num')
+      ) remove(cells[index+el], 'hidden')
+    })
   }
 
   function remove(cell, className){
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.classList.add('num')
     }
 
-    cell.addEventListener('click', () => clearSurrounding(cell, index))
+    cell.addEventListener('click', () => clearBlanks(cell, index))
     cell.addEventListener('contextmenu', (e) => {
       e.preventDefault()
       cell.classList.toggle('flag')
