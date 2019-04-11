@@ -89,8 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkGameState(cell){
     if(cell.classList.contains('mine')){
       alert('YOU LOSE!')
-    } else if (mines.every(mine => mine.classList.contains('flag'))){
-      alert('YOU WIN!')
     }
   }
 
@@ -111,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cell.addEventListener('contextmenu', (e) => {
       e.preventDefault()
       cell.classList.toggle('flag')
+      if (mines.every(mine => mine.classList.contains('flag'))){
+        alert('YOU WIN!')
+      }
     })
   })
 })
