@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const width = 8
   const gameBoard = document.getElementById('gameBoard')
   const cells = []
-  const mines = []
+  const mines = 10
+  const flags = []
   const surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1]
   const adjacent = [1, -1, width, -width]
 
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameBoard.appendChild(cell)
   }
 
-  for(let i=0;i<10;i++){
+  for(let i=0;i<mines;i++){
     let random = Math.floor(Math.random()* width**2)
     let mine = cells[random]
     while(mine.classList.contains('mine')){
@@ -25,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mine = cells[random]
     }
     mine.classList.add('mine')
-    mines.push(mine)
   }
 
   function validCells(arr, index){
@@ -86,9 +86,22 @@ document.addEventListener('DOMContentLoaded', () => {
     cell.classList.remove(className)
   }
 
-  function checkGameState(cell){
+  function checkForMine(cell){
     if(cell.classList.contains('mine')){
       alert('YOU LOSE!')
+    }
+  }
+
+  function flagHandler(e, cell){
+    e.preventDefault()
+    if (flags.includes(cell)){
+      flags.splice(flags.indexOf(cell), 1)
+    } else flags.push(cell)
+    cell.classList.toggle('flag')
+    if (flags.every(flag => flag.classList.contains('mine')) &&
+      flags.length === mines
+    ){
+      alert('YOU WIN!')
     }
   }
 
@@ -104,14 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cell.addEventListener('click', () => {
       clearBlanks(cell, index)
-      checkGameState(cell)
+      checkForMine(cell)
     })
     cell.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
-      cell.classList.toggle('flag')
-      if (mines.every(mine => mine.classList.contains('flag'))){
-        alert('YOU WIN!')
-      }
+      flagHandler(e, cell)
     })
   })
 })
