@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const width = 8
   const gameBoard = document.getElementById('gameBoard')
   const cells = []
+  const mines = []
   const surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1]
   const adjacent = [1, -1, width, -width]
 
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mine = cells[random]
     }
     mine.classList.add('mine')
+    mines.push(mine)
   }
 
   function validCells(arr, index){
@@ -55,17 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function clearBlanks(cell, index){
     remove(cell, 'hidden')
-    const next = validCells(adjacent, index)
-    if (isBlank(cell)){
-      next.forEach(el => {
-        if(cells[index+el] &&
-          isBlank(cells[index+el]) &&
-          cells[index + el].classList.contains('hidden')
-        ){
-          clearNums(index+el)
-          clearBlanks(cells[index + el], index+el)
-        }
-      })
+    if(isBlank(cell)){
+      clearNums(index)
+      const next = validCells(adjacent, index)
+      if (isBlank(cell)){
+        next.forEach(el => {
+          if(cells[index+el] &&
+            isBlank(cells[index+el]) &&
+            cells[index + el].classList.contains('hidden')
+          ){
+            clearBlanks(cells[index + el], index+el)
+          }
+        })
+      }
     }
   }
 
@@ -82,6 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
     cell.classList.remove(className)
   }
 
+  function checkGameState(cell){
+    if(cell.classList.contains('mine')){
+      alert('YOU LOSE!')
+    } else if (mines.every(mine => mine.classList.contains('flag'))){
+      alert('YOU WIN!')
+    }
+  }
+
   cells.forEach((cell, index) => {
 
     const count = countSurrounding(index, 'mine')
@@ -92,7 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.classList.add('num')
     }
 
-    cell.addEventListener('click', () => clearBlanks(cell, index))
+    cell.addEventListener('click', () => {
+      clearBlanks(cell, index)
+      checkGameState(cell)
+    })
     cell.addEventListener('contextmenu', (e) => {
       e.preventDefault()
       cell.classList.toggle('flag')
