@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+
   const width = 8
   const gameBoard = document.getElementById('gameBoard')
   const cells = []
-  const mines = 10
+  const numOfMines = 10
+  const mines = []
   const flags = []
   const surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1]
   const adjacent = [1, -1, width, -width]
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameBoard.appendChild(cell)
   }
 
-  for(let i=0;i<mines;i++){
+  for(let i=0;i<numOfMines;i++){
     let random = Math.floor(Math.random()* width**2)
     let mine = cells[random]
     while(mine.classList.contains('mine')){
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mine = cells[random]
     }
     mine.classList.add('mine')
+    mines.push(mine)
   }
 
   function validCells(arr, index){
@@ -82,6 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  function explode(cell){
+    let currentStep = 0
+    const explosionTimer = setInterval(() => {
+      cell.setAttribute('data-step', currentStep)
+      currentStep = currentStep === 15 ? 0 : currentStep += 1
+      if(currentStep === 0) {
+        clearInterval(explosionTimer)
+      }
+    }, 50)
+  }
+
   function remove(cell, className){
     cell.classList.remove(className)
   }
@@ -89,6 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkForMine(cell){
     if(cell.classList.contains('mine')){
       alert('YOU LOSE!')
+      explode(cell)
+      let i = 0
+      const explosionTimer = setInterval(() => {
+        if(i<mines.length){
+          remove(mines[i], 'hidden')
+          explode(mines[i])
+        } else clearInterval(explosionTimer)
+        i++
+      }, 100)
     }
   }
 
@@ -99,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else flags.push(cell)
     cell.classList.toggle('flag')
     if (flags.every(flag => flag.classList.contains('mine')) &&
-      flags.length === mines
+      flags.length === numOfMines
     ){
       alert('YOU WIN!')
     }
@@ -116,8 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     cell.addEventListener('click', () => {
-      clearBlanks(cell, index)
-      checkForMine(cell)
+      if(cell.classList.contains('flag')) remove(cell, 'flag')
+      else {
+        clearBlanks(cell, index)
+        checkForMine(cell)
+      }
     })
     cell.addEventListener('contextmenu', (e) => {
       flagHandler(e, cell)
