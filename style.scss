@@ -1,3 +1,7 @@
+@mixin box-shadow($color){
+  box-shadow: inset 0 0 20px 5px $color;
+} 
+
 *{
   box-sizing: border-box;
 }
@@ -31,7 +35,7 @@ h1{
     justify-content: center;
     font-size: 3rem;
     transition: box-shadow 0.5s ease;
-    box-shadow: inset 0 0 20px 5px #fff;
+    @include box-shadow(#fff);
     background-image: none;
 
     p {
@@ -40,6 +44,7 @@ h1{
     }
 
     &.mine {
+      @include box-shadow(#f00);
       background-image: url(explosion.png);
       background-size: 400%;
 

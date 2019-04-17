@@ -33,6 +33,7 @@ h1 {
       transition: opacity 0.8s ease;
       color: #ccc; }
     #gameBoard .cell.mine {
+      box-shadow: inset 0 0 20px 5px #f00;
       background-image: url(explosion.png);
       background-size: 400%; }
       #gameBoard .cell.mine[data-step="0"] {
