@@ -1,22 +1,59 @@
 @mixin box-shadow($color){
   box-shadow: inset 0 0 20px 5px $color;
-} 
+}
 
-*{
+@import url('https://fonts.googleapis.com/css?family=Oswald:400,700');
+
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   background: #000;
+  font-family: Oswald, sans-serif;
 }
 
-h1{
+h1, h2 {
   color: #f00;
   text-align: center;
+  font-size: 2rem;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+button {
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 2rem;
+  display: block;
+  margin: auto;
+  border-radius: 10px;
+  background: #000;
+  border: 4px solid #fff;
+  color: #fff;
+  transition: all 0.7s ease;
+
+  &:hover {
+    border-color: #f00;
+    color: #f00;
+    background: #fff;
+  }
+}
+
+#overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  top: 0;
+  left: 0;
 }
 
 #gameBoard {

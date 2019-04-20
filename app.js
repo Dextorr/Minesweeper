@@ -5,7 +5,11 @@ const width = 8,
   flags = [],
   surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1],
   adjacent = [1, -1, width, -width]
-let gameBoard
+let gameBoard,
+  overlay,
+  title,
+  subtitle,
+  startButton
 
 function createBoard(){
   for(let i=0;i<width**2;i++){
@@ -153,11 +157,28 @@ function addEvents(){
   })
 }
 
-function init(){
-  gameBoard = document.getElementById('gameBoard')
+function startScreen(titleMsg, subMsg, buttonMsg){
+  title = document.createElement('h1')
+  title.innerText = titleMsg
+  subtitle = document.createElement('h2')
+  subtitle.innerText = subMsg
+  startButton = document.createElement('button')
+  startButton.innerText = buttonMsg
+  startButton.addEventListener('click', startGame);
+  [title, subtitle, startButton].forEach(el => overlay.appendChild(el))
+}
+
+function startGame(){
+  overlay.style.display = 'none'
   createBoard()
   placeMines()
   addEvents()
+}
+
+function init(){
+  gameBoard = document.getElementById('gameBoard')
+  overlay = document.getElementById('overlay')
+  startScreen('Minesweeper', 'Try and find all the mines!', 'Start Game')
 }
 
 document.addEventListener('DOMContentLoaded', init)
