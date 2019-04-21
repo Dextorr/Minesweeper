@@ -180,6 +180,10 @@ button {
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
+
+        &.correct {
+          @include box-shadow(#0f0);
+        }
       }
     }
   }

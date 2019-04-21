@@ -1,15 +1,15 @@
 const width = 8,
-  numOfMines = 10,
-  cells = [],
-  mines = [],
-  flags = [],
+  numOfMines = 1,
   surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1],
   adjacent = [1, -1, width, -width]
 let gameBoard,
   overlay,
   title,
   subtitle,
-  startButton
+  startButton,
+  cells = [],
+  mines = [],
+  flags = []
 
 function createBoard(){
   for(let i=0;i<width**2;i++){
@@ -129,7 +129,10 @@ function flagHandler(e, cell){
   if (flags.every(flag => flag.classList.contains('mine')) &&
   flags.length === numOfMines
   ){
-    alert('YOU WIN!')
+    flags.forEach(flag => flag.classList.add('correct'))
+    setTimeout(() => {
+      endGame('You Won!!', 'You safely discovered all the mines!', 'Play again?')
+    }, 1000)
   }
 }
 
@@ -173,6 +176,16 @@ function startGame(){
   createBoard()
   placeMines()
   addEvents()
+}
+
+function endGame(endMsg, subMsg, buttonMsg){
+  overlay.innerHTML = ''
+  startScreen(endMsg, subMsg, buttonMsg)
+  overlay.style.display = 'block'
+  gameBoard.innerHTML = ''
+  cells = []
+  mines = []
+  flags = []
 }
 
 function init(){
