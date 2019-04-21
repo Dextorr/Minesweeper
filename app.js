@@ -1,5 +1,5 @@
 const width = 8,
-  numOfMines = 1,
+  numOfMines = 10,
   surrounding = [width -1, width, width+1, 1, -width+1, -width, -width -1, -1],
   adjacent = [1, -1, width, -width]
 let gameBoard,
