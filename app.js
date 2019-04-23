@@ -118,7 +118,7 @@ function checkForMine(cell){
     }, 100)
     setTimeout(() => {
       endGame('Game Over!!', 'You detonated the mines! 😔', 'Play again?')
-    }, 2000)
+    }, 2500)
   }
 }
 
@@ -140,7 +140,7 @@ function flagHandler(e, cell){
     }, 100)
     setTimeout(() => {
       endGame('You Won!!', 'You safely discovered all the mines!', 'Play again?')
-    }, 2000)
+    }, 2500)
   }
 }
 
@@ -199,7 +199,7 @@ function endGame(endMsg, subMsg, buttonMsg){
 function init(){
   gameBoard = document.getElementById('gameBoard')
   overlay = document.getElementById('overlay')
-  startScreen('Minesweeper', 'Try and find all the mines!', 'Start Game')
+  startScreen('Minesweeper', 'Try and find all the mines!\nLeft click to uncover a tile, right click to plant a flag.\nNumbers tell you how many mines surround that tile.\nYou win when there is a flag on every mine.', 'Start Game')
 }
 
 document.addEventListener('DOMContentLoaded', init)
