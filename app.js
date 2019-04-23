@@ -107,7 +107,6 @@ function explode(cell){
 
 function checkForMine(cell){
   if(cell.classList.contains('mine')){
-    alert('YOU LOSE!')
     explode(cell)
     let i = 0
     const explosionTimer = setInterval(() => {
@@ -117,6 +116,9 @@ function checkForMine(cell){
       } else clearInterval(explosionTimer)
       i++
     }, 100)
+    setTimeout(() => {
+      endGame('Game Over!!', 'You detonated the mines! 😔', 'Play again?')
+    }, 2000)
   }
 }
 
@@ -129,10 +131,16 @@ function flagHandler(e, cell){
   if (flags.every(flag => flag.classList.contains('mine')) &&
   flags.length === numOfMines
   ){
-    flags.forEach(flag => flag.classList.add('correct'))
+    let i = 0
+    const explosionTimer = setInterval(() => {
+      if(i<flags.length){
+        flags[i].classList.add('correct')
+      } else clearInterval(explosionTimer)
+      i++
+    }, 100)
     setTimeout(() => {
       endGame('You Won!!', 'You safely discovered all the mines!', 'Play again?')
-    }, 1000)
+    }, 2000)
   }
 }
 
