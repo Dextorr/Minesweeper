@@ -74,6 +74,8 @@ button {
     transition: box-shadow 0.5s ease;
     @include box-shadow(#fff);
     background-image: none;
+    cursor: pointer;
+    user-select: none;
 
     p {
       transition: opacity 0.8s ease;
