@@ -1,3 +1,8 @@
+const difficulties = [
+  { name: 'Easy', params: [8, 10] },
+  { name: 'Medium', params: [10, 20] },
+  { name: 'Hard', params: [13, 40] }
+]
 let overlay,
   title,
   subtitle,
@@ -14,7 +19,6 @@ class Minesweeper {
     this.mines = []
     this.flags = []
 
-    // this.init = this.init.bind(this)
     this.startGame = this.startGame.bind(this)
     this.createBoard = this.createBoard.bind(this)
 
@@ -22,7 +26,6 @@ class Minesweeper {
   }
 
   init(){
-    overlay = document.getElementById('overlay')
     this.startScreen('Minesweeper', 'Try and find all the mines!\nLeft click to uncover a tile, right click to plant a flag.\nNumbers tell you how many mines surround that tile.\nYou win when there is a flag on every mine.', 'Start Game')
   }
 
@@ -191,14 +194,11 @@ class Minesweeper {
   }
 
   startScreen(titleMsg, subMsg, buttonMsg){
-    title = document.createElement('h1')
-    title.innerText = titleMsg
-    subtitle = document.createElement('h2')
-    subtitle.innerText = subMsg
+    const titles = createHeaders(titleMsg, subMsg)
     startButton = document.createElement('button')
     startButton.innerText = buttonMsg
     startButton.addEventListener('click', this.startGame);
-    [title, subtitle, startButton].forEach(el => overlay.appendChild(el))
+    [...titles, startButton].forEach(el => overlay.appendChild(el))
   }
 
   endGame(endMsg, subMsg, buttonMsg){
@@ -213,6 +213,27 @@ class Minesweeper {
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  new Minesweeper(8, 10)
-})
+function createHeaders(titleMsg, subMsg){
+  title = document.createElement('h1')
+  title.innerText = titleMsg
+  subtitle = document.createElement('h2')
+  subtitle.innerText = subMsg
+  return [title, subtitle]
+}
+
+function diffChoice(){
+  overlay = document.getElementById('overlay')
+  const titles = createHeaders('Minesweeper', 'Select a difficulty...')
+  const buttons = difficulties.map(mode => {
+    const button = document.createElement('button')
+    button.innerText = mode.name
+    button.addEventListener('click', () => {
+      overlay.innerHTML = ''
+      new Minesweeper(...mode.params)
+    })
+    return button
+  })
+  titles.concat(buttons).forEach(el => overlay.appendChild(el))
+}
+
+document.addEventListener('DOMContentLoaded', diffChoice)
